@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas Matematika Tingkat Lanjut - Refleksi Titik Bagian 1</title>
+    
+    <!-- MathJax Configuration & Script -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #6C5CE7;
+            --accent: #FD79A8;
+            --bg-gradient: linear-gradient(135deg, #0984E3 0%, #6C5CE7 100%);
+            --card-bg: #FFFFFF;
+            --text-color: #2D3436;
+            --light-bg: #F8F9FA;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            padding: 30px 20px;
+            color: var(--text-color);
+        }
+
+        /* Wide Container for Full Spacing */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px dashed #DFE6E9;
+        }
+
+        .header h1 {
+            color: var(--secondary);
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .header h2 {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* Identity Section (Page 1) */
+        #identity-page {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #F4F7FC;
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid #E2E8F0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #2C3E50;
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #CBD5E0;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.15);
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .class-btn {
+            padding: 12px;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .class-btn:hover {
+            background: #EBF5FB;
+        }
+
+        .class-btn.selected {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+        }
+
+        /* Sticky Bar for Timer & User Info */
+        .quiz-top-bar {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background: #FFFFFF;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 2px solid #E2E8F0;
+        }
+
+        .student-info-display {
+            font-weight: 700;
+            font-size: 16px;
+            color: #2D3436;
+        }
+
+        .timer-badge {
+            background: #FFEAA7;
+            color: #D63031;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 18px;
+            border: 2px solid #FDCB6E;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Question Layout - Memanjang ke Samping */
+        .question-card {
+            background: #FFFFFF;
+            border: 2px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: border-color 0.3s ease;
+        }
+
+        .question-card:hover {
+            border-color: #A29BFE;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .badge-mudah { background-color: #00B894; }
+        .badge-sedang { background-color: #0984E3; }
+        .badge-susah { background-color: #D63031; }
+
+        .question-title {
+            font-weight: 700;
+            font-size: 17px;
+            color: #2D3436;
+        }
+
+        .question-text {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: #2D3436;
+            width: 100%;
+        }
+
+        /* Options Container Horizontal & Wide Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 12px;
+            width: 100%;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            border: 2px solid #EDF2F7;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #F8FAFC;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .option-label:hover {
+            background: #FFF9DB;
+            border-color: #FDCB6E;
+        }
+
+        .option-label input {
+            margin-right: 14px;
+            transform: scale(1.3);
+            accent-color: var(--secondary);
+            cursor: pointer;
+        }
+
+        /* Action Buttons */
+        .btn-action {
+            width: 100%;
+            background: linear-gradient(90deg, #6C5CE7, #8E44AD);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(108, 92, 231, 0.35);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(108, 92, 231, 0.5);
+        }
+
+        /* Modal Confirmation */
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .modal-card h3 {
+            color: #2D3436;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .modal-card p {
+            color: #636E72;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .class-grid { grid-template-columns: repeat(2, 1fr); }
+            .options-grid { grid-template-columns: 1fr; }
+            .quiz-top-bar { flex-direction: column; gap: 10px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header Utama -->
+    <div class="header">
+        <h1>Tugas Matematika Tingkat Lanjut</h1>
+        <h2>Refleksi Titik - Bagian 1</h2>
+    </div>
+
+    <!-- HALAMAN 1: ISIAN IDENTITAS -->
+    <div id="identity-page">
+        <div class="form-group">
+            <label for="nama">Nama Lengkap Siswa:</label>
+            <input type="text" id="nama" placeholder="Ketik nama lengkap Anda di sini..." autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label>Pilih Kelas:</label>
+            <div class="class-grid">
+                <div class="class-btn" onclick="selectClass(this, 'XI I')">XI I</div>
+                <div class="class-btn" onclick="selectClass(this, 'XI J')">XI J</div>
+                <div class="class-btn" onclick="selectClass(this, 'XI K')">XI K</div>
+                <div class="class-btn" onclick="selectClass(this, 'XI L')">XI L</div>
+            </div>
+        </div>
+        <button type="button" class="btn-action" onclick="startQuiz()">Mulai Mengerjakan</button>
+    </div>
+
+    <!-- HALAMAN 2: SOAL KUIS (Awalnya tersembunyi) -->
+    <div id="quiz-page" style="display: none;">
+        <!-- Top Sticky Bar -->
+        <div class="quiz-top-bar">
+            <div class="student-info-display" id="info-display">
+                Siswa: - | Kelas: -
+            </div>
+            <div class="timer-badge">
+                ⏱️ Waktu: <span id="timer-display">60:00</span>
+            </div>
+        </div>
+
+        <form id="quiz-form">
+            <div id="questions-container"></div>
+            <button type="button" class="btn-action" onclick="submitQuiz(false)">Kirim Jawaban</button>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL KONFIRMASI TERKIRIM (TANPA TAMPILAN SKOR) -->
+<div id="result-modal">
+    <div class="modal-card">
+        <div class="modal-icon">🎉</div>
+        <h3>Jawaban Berhasil Terkirim!</h3>
+        <p>Terima kasih telah menyelesaikan tugas Matematika ini. Jawaban Anda telah tersimpan secara otomatis di sistem.</p>
+        <button class="btn-action" onclick="location.reload()" style="padding: 12px 24px; font-size: 16px;">Selesai</button>
+    </div>
+</div>
+
+<script>
+    // URL Google Apps Script Anda (Ganti dengan URL yang Anda dapatkan setelah Deploy Web App)
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEpVpDG33gD9U07swfkNNCoYPaFHx0CAytGaAb_j61qAfGS1wlDu2uV7F45SDvo9uE1Q/exec";
+
+    let selectedKelas = "";
+    let studentNama = "";
+    let timerInterval = null;
+    let timeRemaining = 60 * 60; // 60 Menit (dalam detik)
+
+    function selectClass(element, kelas) {
+        document.querySelectorAll('.class-btn').forEach(btn => btn.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedKelas = kelas;
+    }
+
+    // Data Soal Refleksi Titik (3 Mudah, 5 Sedang, 2 Susah)
+    const rawQuestions = [
+        // MUDAH (3 Soal)
+        {
+            level: "Mudah",
+            text: "Bayangan titik $A(4, -3)$ jika dicerminkan terhadap sumbu-$x$ adalah...",
+            options: ["$A'(-4, -3)$", "$A'(4, 3)$", "$A'(-4, 3)$", "$A'(3, -4)$", "$A'(-3, 4)$"],
+            correctText: "$A'(4, 3)$"
+        },
+        {
+            level: "Mudah",
+            text: "Bayangan titik $B(-2, 5)$ jika dicerminkan terhadap sumbu-$y$ adalah...",
+            options: ["$B'(2, 5)$", "$B'(-2, -5)$", "$B'(2, -5)$", "$B'(5, -2)$", "$B'(-5, 2)$"],
+            correctText: "$B'(2, 5)$"
+        },
+        {
+            level: "Mudah",
+            text: "Bayangan titik $C(6, 1)$ jika dicerminkan terhadap garis $y = x$ adalah...",
+            options: ["$C'(-6, -1)$", "$C'(-1, -6)$", "$C'(1, 6)$", "$C'(6, -1)$", "$C'(-6, 1)$"],
+            correctText: "$C'(1, 6)$"
+        },
+        // SEDANG (5 Soal)
+        {
+            level: "Sedang",
+            text: "Titik $D(-4, -7)$ dicerminkan terhadap garis $y = -x$. Koordinat bayangan titik $D$ adalah...",
+            options: ["$D'(7, 4)$", "$D'(-7, -4)$", "$D'(4, 7)$", "$D'(-4, 7)$", "$D'(7, -4)$"],
+            correctText: "$D'(7, 4)$"
+        },
+        {
+            level: "Sedang",
+            text: "Titik $P(a, b)$ dicerminkan terhadap sumbu-$x$ menghasilkan bayangan $P'(5, -2)$. Nilai dari $a + b$ adalah...",
+            options: ["$3$", "$7$", "$-3$", "$-7$", "$10$"],
+            correctText: "$7$"
+        },
+        {
+            level: "Sedang",
+            text: "Jika titik $Q(-3, 8)$ dicerminkan terhadap garis $y = x$, kemudian hasilnya dicerminkan lagi terhadap sumbu-$y$, maka koordinat bayangan akhir titik $Q$ adalah...",
+            options: ["$Q''(-8, -3)$", "$Q''(8, -3)$", "$Q''(-8, 3)$", "$Q''(3, -8)$", "$Q''(-3, -8)$"],
+            correctText: "$Q''(-8, -3)$"
+        },
+        {
+            level: "Sedang",
+            text: "Bayangan titik $R(2p, -5)$ oleh pencerminan terhadap garis $y = -x$ adalah $R'(5, 4)$. Nilai $p$ yang memenuhi adalah...",
+            options: ["$2$", "$-2$", "$1$", "$-1$", "$3$"],
+            correctText: "$-2$"
+        },
+        {
+            level: "Sedang",
+            text: "Titik $K(3, -5)$ dicerminkan terhadap sumbu-$y$ menghasilkan titik $K'$. Jarak antara titik $K$ dan titik $K'$ adalah...",
+            options: ["$3$ satuan", "$5$ satuan", "$6$ satuan", "$10$ satuan", "$8$ satuan"],
+            correctText: "$6$ satuan"
+        },
+        // SUSAH (2 Soal)
+        {
+            level: "Susah",
+            text: "Sebuah segitiga $ABC$ memiliki titik-titik sudut $A(1, 2)$, $B(4, 2)$, dan $C(1, 6)$. Segitiga tersebut dicerminkan terhadap garis $y = x$. Luas bayangan segitiga $A'B'C'$ adalah...",
+            options: ["$6$ satuan luas", "$12$ satuan luas", "$8$ satuan luas", "$10$ satuan luas", "$15$ satuan luas"],
+            correctText: "$6$ satuan luas"
+        },
+        {
+            level: "Susah",
+            text: "Titik $M(x, y)$ dicerminkan terhadap sumbu-$x$, kemudian dilanjutkan pencerminan terhadap garis $y = -x$ sehingga menghasilkan bayangan akhir $M''(-4, 3)$. Koordinat asal titik $M$ adalah...",
+            options: ["$M(3, 4)$", "$M(-3, -4)$", "$M(4, -3)$", "$M(-4, -3)$", "$M(3, -4)$"],
+            correctText: "$M(-3, -4)$"
+        }
+    ];
+
+    // Algoritma Acak Fisher-Yates
+    function shuffleArray(array) {
+        let arr = [...array];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    const renderedQuestions = [];
+
+    // Fungsi Pindah ke Halaman Kuis
+    function startQuiz() {
+        studentNama = document.getElementById('nama').value.trim();
+
+        if (!studentNama) {
+            alert('Silakan ketik nama lengkap Anda terlebih dahulu!');
+            return;
+        }
+
+        if (!selectedKelas) {
+            alert('Silakan pilih kelas Anda!');
+            return;
+        }
+
+        // Tampilkan Info Siswa & Ganti Halaman
+        document.getElementById('info-display').innerHTML = `<strong>Siswa:</strong> ${studentNama} &nbsp;|&nbsp; <strong>Kelas:</strong> ${selectedKelas}`;
+        document.getElementById('identity-page').style.display = 'none';
+        document.getElementById('quiz-page').style.display = 'block';
+
+        // Render Soal & Mulai Waktu
+        renderQuestions();
+        startTimer();
+    }
+
+    // Render Soal dan Opsi Teracak
+    function renderQuestions() {
+        const container = document.getElementById('questions-container');
+        container.innerHTML = '';
+
+        rawQuestions.forEach((q, index) => {
+            const shuffledOpts = shuffleArray(q.options);
+            renderedQuestions.push({
+                ...q,
+                shuffledOpts: shuffledOpts
+            });
+
+            const optionLetters = ['A', 'B', 'C', 'D', 'E'];
+            const optionsHTML = shuffledOpts.map((opt, i) => `
+                <label class="option-label">
+                    <input type="radio" name="q${index}" value="${opt.replace(/"/g, '&quot;')}">
+                    <strong>${optionLetters[i]}.</strong>&nbsp; ${opt}
+                </label>
+            `).join('');
+
+            const card = `
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="badge badge-${q.level.toLowerCase()}">${q.level}</span>
+                        <span class="question-title">Soal Nomor ${index + 1}</span>
+                    </div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="options-grid">
+                        ${optionsHTML}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += card;
+        });
+
+        // Trigger Render Ulang MathJax Setelah DOM Dimuat
+        if (window.MathJax && window.MathJax.typesetPromise) {
+            window.MathJax.typesetPromise();
+        }
+    }
+
+    // Timer Hitung Mundur 60 Menit
+    function startTimer() {
+        updateTimerDisplay();
+        timerInterval = setInterval(() => {
+            timeRemaining--;
+            updateTimerDisplay();
+
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                alert('Waktu 60 menit telah habis! Jawaban Anda akan dikirim otomatis.');
+                submitQuiz(true);
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        const formattedMin = minutes < 10 ? `0${minutes}` : minutes;
+        const formattedSec = seconds < 10 ? `0${seconds}` : seconds;
+        document.getElementById('timer-display').innerText = `${formattedMin}:${formattedSec}`;
+    }
+
+    // Fungsi Kirim Jawaban
+    function submitQuiz(isAutoSubmit = false) {
+        if (!isAutoSubmit) {
+            for (let i = 0; i < renderedQuestions.length; i++) {
+                const checked = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!checked) {
+                    alert(`Soal nomor ${i + 1} belum Anda jawab!`);
+                    return;
+                }
+            }
+        }
+
+        clearInterval(timerInterval);
+
+        let score = 0;
+        let detailJawaban = {};
+
+        renderedQuestions.forEach((q, i) => {
+            const checked = document.querySelector(`input[name="q${i}"]:checked`);
+            const userAns = checked ? checked.value : "Tidak Dijawab";
+            const isCorrect = (userAns === q.correctText);
+
+            if (isCorrect) score += 10;
+
+            detailJawaban[`Soal_${i+1}`] = {
+                jawabanSiswa: userAns,
+                kunciJawaban: q.correctText,
+                status: isCorrect ? "BENAR" : "SALAH"
+            };
+        });
+
+        // Tampilkan Modal Konfirmasi TANPA MENAMPILKAN SKOR
+        document.getElementById('result-modal').style.display = 'flex';
+
+        // Pengiriman Data ke Backend Apps Script
+        const elapsedSeconds = (60 * 60) - timeRemaining;
+        const minutesUsed = Math.floor(elapsedSeconds / 60);
+        const secondsUsed = elapsedSeconds % 60;
+        const durasiWaktu = `${minutesUsed} menit ${secondsUsed} detik`;
+
+        const payload = {
+            nama: studentNama,
+            kelas: selectedKelas,
+            skor: score,
+            totalSoal: renderedQuestions.length,
+            durasi: durasiWaktu,
+            detailJawaban: detailJawaban
+        };
+
+        if (SCRIPT_URL && SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbxEpVpDG33gD9U07swfkNNCoYPaFHx0CAytGaAb_j61qAfGS1wlDu2uV7F45SDvo9uE1Q/execF") {
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                console.log("Data berhasil tersimpan ke Apps Script.");
+            }).catch(err => {
+                console.error("Gagal mengirim data:", err);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
